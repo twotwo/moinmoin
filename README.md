@@ -2,21 +2,19 @@
 
 # MoinMoin
 
-Moinmoin wiki on uWSGI docker container
+Moinmoin wiki with Gunicorn docker container
 
-# What is MoinMoin?
+## What is Gunicorn?
 
-MoinMoin is an advanced, easy to use and extensible WikiEngine with a large
-community of users. Said in a few words, it is about collaboration on easily
-editable web pages.
+Gunicorn (Green Unicorn，绿色独角兽) 是一个WSGI服务器，用来支持Python应用。它是 Ruby 的 Unicorn 服务器的Python实现。Unicorn被设计成轻量级的、易于使用的、并使用许多UNIX特性（UNIX idioms）。Gunicorn不是被设计成面向互联网的 – 它被设计成运行于Nginx之后，缓存慢请求，以及关注其他重要的内容。在 Gunicorn help 能找到 Nginx + Gunicorn 的简单配置步骤。
 
-# How to use this image
+## How to use this image
 
-## Hosting a simple wiki (still needs a web server in front of it)
+### Hosting a simple wiki (still needs a web server in front of it)
 
-    sudo docker run -it --name wiki -p 3031:3031 -d dperson/moinmoin
+    sudo docker run -it --name wiki -p 3031:3031 -d twotwo/moinmoin
 
-## Complex configuration
+### Complex configuration
 
     sudo docker run -it --name wiki -d dperson/moinmoin
     sudo docker run -it --name web --link wiki:wiki -p 80:80 -p 443:443 -d \
@@ -80,4 +78,10 @@ OR
 ## Issues
 
 If you have any problems with or questions about this image, please contact me
-through a [GitHub issue](https://github.com/dperson/moinmoin/issues).
+through a [GitHub issue](https://github.com/twotwo/moinmoin/issues).
+
+## About the Image
+
+```
+wget http://static.moinmo.in/files/moin-1.9.10.tar.gz
+```

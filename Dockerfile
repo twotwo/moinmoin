@@ -1,12 +1,9 @@
-FROM alpine
-MAINTAINER David Personette <dperson@gmail.com>
-
+FROM python:2.7-alpine
+MAINTAINER li3huo <twotwo.li@gmail.com>
 # Install uwsgi and MoinMoin
 RUN file=moin-1.9.10.tar.gz && \
     sha256sum=4a264418e886082abd457c26991f4a8f4847cd1a2ffc11e10d66231da8a50 && \
-    apk --no-cache --no-progress upgrade && \
-    apk --no-cache --no-progress add bash curl py2-markdown tini \
-                uwsgi-python shadow && \
+    apk --no-cache --no-progress add curl && \
     echo "downloading $file ..." && \
     curl -LOSs http://static.moinmo.in/files/$file && \
     sha256sum $file | grep -q "$sha256sum" || \
@@ -28,6 +25,8 @@ RUN file=moin-1.9.10.tar.gz && \
 
 COPY docker.png /usr/local/lib/python2.7/site-packages/MoinMoin/web/static/htdocs/common/
 COPY moin.sh /usr/bin/
+COPY requirements.txt /requirements.txt
+RUN pip install -r /requirements.txt
 
 EXPOSE 3031
 

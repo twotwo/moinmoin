@@ -1,0 +1,22 @@
+version: "3.7"
+services:
+
+  moinmoin:
+    build:
+      context: ./
+      dockerfile: Dockerfile-gunicorn
+    image: twotwo/moinmoin
+    ports:
+      - "6379"
+    networks:
+      - wiki
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+networks:
+  wiki:

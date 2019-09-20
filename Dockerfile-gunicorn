@@ -1,0 +1,44 @@
+FROM python:2.7-alpine as base
+FROM base as builder
+MAINTAINER li3huo <twotwo.li@gmail.com>
+RUN mkdir /install
+WORKDIR /install
+ENV MOIN_VERSION=1.9.10
+ENV MOIN_SHA256=4a264418e886082abd457c26991f4a8f4847cd1a2ffc11e10d66231da8a50
+# Install MoinMoin
+RUN file=moin-${MOIN_VERSION}.tar.gz && \
+    sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories  && \
+    apk --no-cache --no-progress add curl && \
+    echo "downloading $file ..." && \
+    curl -LOSs http://static.moinmo.in/files/$file && \
+    sha256sum $file | grep -q "${MOIN_SHA256}" || \
+    { echo "expected ${MOIN_SHA256}, got $({MOIN_SHA256} $file)"; exit 13; } && \
+    mkdir moinmoin && \
+    tar -xf $file -C moinmoin --strip-components=1 && \
+    (cd moinmoin && \
+    python setup.py install --force --prefix=/install >/dev/null) && \
+    sed -e '/logo_string/ { s/moinmoin/docker/; s/MoinMoin // }' \
+                -e '/url_prefix_static/ {s/#\(url_prefix_static\)/\1/; s/my//}'\
+                -e '/page_front_page.*Front/s/#\(page_front_page\)/\1/' \
+                -e '/superuser/ { s/#\(superuser\)/\1/; s/YourName/mmAdmin/ }' \
+                -e '/page_front_page/s/#u/u/' \
+                /install/share/moin/config/wikiconfig.py \
+                >/install/share/moin/wikiconfig.py && \
+    rm -rf /tmp/* $file moinmoin raw && \
+    pip install --install-option="--prefix=/install" gunicorn=19.9.0 \
+                gevent \
+                supervisor==4.0.4
+
+COPY docker.png /install/lib/python2.7/site-packages/MoinMoin/web/static/htdocs/common/
+FROM base
+# Copy Builder Image
+COPY --from=builder /install /usr/local
+
+COPY moin.sh /usr/bin/
+
+EXPOSE 3031
+
+HEALTHCHECK --interval=60s --timeout=15s \
+            CMD netstat -lntp | grep -q '0\.0\.0\.0:3031'
+
+VOLUME ["/usr/local/share/moin"]
