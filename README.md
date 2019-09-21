@@ -1,4 +1,4 @@
-[![logo](https://raw.githubusercontent.com/dperson/moinmoin/master/logo.png)](http://moinmo.in/)
+[![logo](https://raw.githubusercontent.com/twotwo/moinmoin/master/logo.png)](http://moinmo.in/)
 
 # MoinMoin
 
@@ -16,19 +16,19 @@ Gunicorn (Green Unicorn，绿色独角兽) 是一个WSGI服务器，用来支持
 
 ### Complex configuration
 
-    sudo docker run -it --name wiki -d dperson/moinmoin
+    sudo docker run -it --name wiki -d twotwo/moinmoin
     sudo docker run -it --name web --link wiki:wiki -p 80:80 -p 443:443 -d \
-                dperson/nginx -u "wiki:3031;/wiki"
+                twotwo/nginx -u "wiki:3031;/wiki"
 
 A separate nginx site file for moinmoin is available from:
-[moinmoin](https://raw.githubusercontent.com/dperson/moinmoin/master/moinmoin)
+[moinmoin](https://raw.githubusercontent.com/twotwo/moinmoin/master/moinmoin)
 
 Default Admin user is set to 'mmAdmin'. To use, create a new user named
 'mmAdmin' and set your desired password. Volums are used, to ease backups, etc.
 
 ## Configuration
 
-    sudo docker run -it --rm dperson/moinmoin -h
+    sudo docker run -it --rm twotwo/moinmoin -h
 
     Usage: moin.sh [-opt] [command]
     Options (fields in '[]' are optional, '<>' are required):
@@ -48,6 +48,10 @@ ENVIRONMENT VARIABLES
  * `USERID` - Set the UID for the app user
  * `GROUPID` - Set the GID for the app user
 
+## Run with Docker
+
+    docker-compose up --build
+
 ## Examples
 
 Any of the commands can be run at creation with `docker run` or later with
@@ -55,23 +59,23 @@ Any of the commands can be run at creation with `docker run` or later with
 
 ### Start moinmoin, and configure the timezone:
 
-    sudo docker run -it -e TZ=EST5EDT -d dperson/moinmoin
+    sudo docker run -it -e TZ=EST5EDT -d twotwo/moinmoin
 
 ### Start moinmoin, and configure the prefix URI:
 
-    sudo docker run -it -d dperson/moinmoin -p /otherwiki
+    sudo docker run -it -d twotwo/moinmoin -p /otherwiki
 
 OR
 
-    sudo docker run -it -e PREFIX=/otherwiki -d dperson/moinmoin
+    sudo docker run -it -e PREFIX=/otherwiki -d twotwo/moinmoin
 
 ### Start moinmoin, and configure the super (admin) user:
 
-    sudo docker run -it -d dperson/moinmoin -s bob
+    sudo docker run -it -d twotwo/moinmoin -s bob
 
 OR
 
-    sudo docker run -it -e SUPER=bob -d dperson/moinmoin
+    sudo docker run -it -e SUPER=bob -d twotwo/moinmoin
 
 # User Feedback
 

@@ -39,12 +39,24 @@ FROM base
 # Copy Builder Image
 COPY --from=builder /install /usr/local
 
-# Init MoinMoin
-COPY moin.sh /usr/bin/
+# Add alias
+ENV ENV="/root/.ashrc"
+RUN echo "alias ll='ls -l'" > "$ENV" && \
+    addgroup -g 499 -S gunicorn && \
+    adduser -HDu 499 -s /sbin/nologin -g 'web server' -G gunicorn gunicorn && \
+    mkdir /var/log/gunicorn
 
-EXPOSE 3031
+# Init MoinMoin
+COPY gunicorn.py /usr/local/share/moin/config/
+COPY supervisord.conf /etc/
+
+EXPOSE 3301
 
 HEALTHCHECK --interval=60s --timeout=15s \
-            CMD netstat -lntp | grep -q '0\.0\.0\.0:3031'
+            CMD netstat -lntp | grep -q '0\.0\.0\.0:3301'
 
-VOLUME ["/usr/local/share/moin"]
+VOLUME ["/srv/www/moin"]
+
+WORKDIR /srv/www/moin
+
+CMD ["supervisord", "--configuration", "/etc/supervisord.conf"]
