@@ -83,5 +83,7 @@ through a [GitHub issue](https://github.com/twotwo/moinmoin/issues).
 ## About the Image
 
 ```
-wget http://static.moinmo.in/files/moin-1.9.10.tar.gz
+curl -LOS http://static.moinmo.in/files/moin-1.9.10.tar.gz
+# macOS
+shasum -a 256 moin-1.9.10.tar.gz
 ```
