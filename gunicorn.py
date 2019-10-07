@@ -65,8 +65,8 @@ tmp_upload_dir = None
 #       A string of "debug", "info", "warning", "error", "critical"
 #
 
-# errorlog = '/srv/www/moin/var/gunicorn_log/error.log'
-errorlog = '-'
+errorlog = '/srv/www/moin/var/error-gunicorn.log'
+# errorlog = '-'
 loglevel = 'info'
 # accesslog = '/srv/www/moin/var/gunicorn_log/access.log'
 accesslog = '-'

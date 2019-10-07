@@ -5,13 +5,16 @@ services:
     container_name: moinmoin
     build:
       context: ./
-      dockerfile: Dockerfile-gunicorn
+      dockerfile: Dockerfile
     image: twotwo/moinmoin
     # # docker stack deploy -c docker-compose.yml wiki
     # deploy:
     #   replicas: 1
     #   restart_policy:
     #     condition: on-failure
+    environment:
+      - MOIN_DEBUG=1 # Debug mode - show detailed error reports
+      - MOIN_DEBUG_LOGDIR=/srv/www/moin/var/debug #https://moinmo.in/UsefulErrors
     ports:
       - 3301:3301
     networks:
