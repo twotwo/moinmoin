@@ -1,0 +1,12 @@
+FROM python:3.7-alpine
+LABEL maintainer="li3huo <twotwo.li@gmail.com>"
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
+ && apk update \
+ && apk add tzdata \
+ && apk add libsodium \
+ && rm /var/cache/apk/* \
+ && pip install --upgrade pip --index https://pypi.tuna.tsinghua.edu.cn/simple \
+ && pip install https://github.com/shadowsocks/shadowsocks/archive/master.zip -U
+
+# Configure container to run as an executable
+ENTRYPOINT ["/usr/local/bin/ssserver"]
