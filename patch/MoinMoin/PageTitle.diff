@@ -1,0 +1,24 @@
+--- Page-1.9.10.py	2019-10-12 15:38:59.000000000 +0800
++++ Page.py	2019-10-12 16:08:23.000000000 +0800
+@@ -715,6 +715,10 @@
+         @rtype: unicode
+         @return: pagename of this page, splitted into space separated words
+         """
++        # Use title in PI, patch on 1.9.10
++        if self.pi.get("title"):
++            return self.pi["title"]
++
+         request = self.request
+         if not force and not request.user.wikiname_add_spaces:
+             return self.page_name
+@@ -1073,6 +1077,10 @@
+                 else:
+                     request.setPragma(key, val)
+ 
++            # Add title to PI, patch on 1.9.10
++            elif verb == "title":
++                pi["title"] = args
++
+         pi['acl'] = security.AccessControlList(request.cfg, acl)
+         return pi
+ 

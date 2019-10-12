@@ -16,6 +16,7 @@ RUN file=moin-${MOIN_VERSION}.tar.gz && \
     pip install --upgrade pip && \
     pip install --install-option="--prefix=/install" gunicorn==19.9.0 \
                 gevent==1.4.0 \
+                futures==3.3.0 \
                 supervisor==4.0.4  && \
     echo "downloading $file ..." && \
     curl -LOSs http://static.moinmo.in/files/$file && \
@@ -49,8 +50,10 @@ RUN echo "alias ll='ls -l'" > "$ENV" && \
     mkdir /var/log/gunicorn
 
 # Init MoinMoin
-COPY gunicorn.py /usr/local/share/moin/config/
+COPY gunicorn.conf /usr/local/share/moin/config/
 COPY supervisord.conf /etc/
+# patch code
+COPY patch/MoinMoin /usr/local/lib/python2.7/site-packages/MoinMoin
 
 EXPOSE 3301
 

@@ -1,0 +1,12 @@
+--- results-1.9.10.py	2019-10-12 16:27:54.000000000 +0800
++++ results.py	2019-10-12 16:29:44.000000000 +0800
+@@ -626,7 +626,8 @@
+             matches = []
+ 
+         # Format
+-        pagename = page.page_name
++        # pagename = page.page_name
++        pagename = page.page.split_title() # patch on 1.9.10
+         f = self.formatter
+         output = []
+         start = 0

@@ -6,7 +6,7 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
-    image: twotwo/moinmoin
+    image: twotwo/moinmoin:1.9.10
     # # docker stack deploy -c docker-compose.yml wiki
     # deploy:
     #   replicas: 1
