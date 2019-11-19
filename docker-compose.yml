@@ -3,9 +3,9 @@ services:
 
   moinmoin:
     container_name: moinmoin
-    build:
-      context: ./
-      dockerfile: Dockerfile
+    # build:
+    #   context: ./
+    #   dockerfile: Dockerfile
     image: twotwo/moinmoin:1.9.10
     # # docker stack deploy -c docker-compose.yml wiki
     # deploy:
@@ -14,14 +14,18 @@ services:
     #     condition: on-failure
     environment:
       - MOIN_DEBUG=1 # Debug mode - show detailed error reports
-      - MOIN_DEBUG_LOGDIR=/srv/www/moin/var/debug #https://moinmo.in/UsefulErrors
+      - MOIN_DEBUG_LOGDIR=/var/www/moin/var/debug #https://moinmo.in/UsefulErrors
     ports:
       - 3301:3301
     networks:
       - wiki
     volumes:
-      - "/srv/www/moin:/srv/www/moin"
+      - "moin_data:/srv/www/moin"
     restart: on-failure
 
 networks:
   wiki:
+
+volumes:
+  moin_data:
+    driver: local
