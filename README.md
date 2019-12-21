@@ -14,8 +14,12 @@ Gunicorn (Green Unicorn，绿色独角兽) 是一个WSGI服务器，用来支持
 
     docker run -it --name moinmoin -p 3301:3301 -d --restart=always twotwo/moinmoin
 
-### Complex configuration
+### Complex configuration(with nginx)
 
+create `.env`, set `HOME_SITE` & `MOIN_DATA`
+
+    mkdir -p /var/www/moin
+    docker cp moinmoin:/usr/local/lib/python2.7/site-packages/MoinMoin/web/static/htdocs /var/www/moin
     docker-compose up -d
 
 ## Development
@@ -38,7 +42,7 @@ shasum -a 256 moin-1.9.10.tar.gz
 
 ## Examples
 
-
+    docker run -it --rm -v /srv/www/moin:/srv/www/moin -p 3301:3301 twotwo/moinmoin
 
 # User Feedback
 

@@ -1,5 +1,19 @@
 version: "3.7"
 services:
+  nginx:
+    container_name: nginx
+    image: nginx:1.17
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/wiki.conf
+      - ${HOME_SITE}:/usr/share/nginx/html
+      - /var/www/moin/htdocs:/var/www/moin/htdocs
+      - ./nginx-log:/var/log/nginx
+    restart: always
+    networks:
+      - wiki
+    ports:
+      - "80:80"
+      - "443:443"
 
   moinmoin:
     container_name: moinmoin
@@ -20,7 +34,7 @@ services:
     networks:
       - wiki
     volumes:
-      - "moin_data:/srv/www/moin"
+      - ${MOIN_DATA}:/srv/www/moin
     restart: on-failure
 
 networks:
