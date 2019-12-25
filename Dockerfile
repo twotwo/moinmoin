@@ -50,7 +50,6 @@ RUN echo "alias ll='ls -l'" > "$ENV" && \
     mkdir /var/log/gunicorn
 
 # Init MoinMoin
-COPY gunicorn.conf /usr/local/share/moin/config/
 COPY supervisord.conf /etc/
 # patch code
 COPY patch/MoinMoin /usr/local/lib/python2.7/site-packages/MoinMoin

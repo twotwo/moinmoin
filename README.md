@@ -12,7 +12,7 @@ Gunicorn (Green Unicorn，绿色独角兽) 是一个WSGI服务器，用来支持
 
 ### Hosting a simple wiki (still needs a web server in front of it)
 
-    docker run -it --name moinmoin -p 3301:3301 -d --restart=always twotwo/moinmoin
+    docker run -it --name moinmoin -v /var/www/moin:/srv/www/moin -p 3301:3301 -d --restart=always twotwo/moinmoin
 
 ### Complex configuration(with nginx)
 
